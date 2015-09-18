@@ -13,7 +13,7 @@ class Config {
 	 * @var Config
 	 * @access private
 	 */
-	private static $instance;
+	private static $instance = null;
 
 	/**
 	 * List of all parameter settings
@@ -30,7 +30,7 @@ class Config {
 	public static function getInstance()
 	{
 
-		if(!isset(self::$instance)) {
+		if(self::$instance == null) {
 			self::$instance = new self();
 		}
 
