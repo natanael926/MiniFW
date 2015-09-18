@@ -1,6 +1,6 @@
 <?php 
 
-namespace Core\Config;
+namespace Config;
 
 /**
  * 
@@ -52,7 +52,6 @@ class Config {
 	public function get($name) 
 	{
 		$this->readIniFile();
-		var_dump($this->rows);
 		return trim($this->rows[$name]);
 	}
 

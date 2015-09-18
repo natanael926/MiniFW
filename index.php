@@ -1,19 +1,13 @@
 <?php
 
 use Core\Db\DBAstration;
+use Config\Config;
 define('__ROOT__', dirname(dirname(__FILE__))); 
 
-require_once(__ROOT__ . '/MiniFW/core/Config/Config.php');
-require_once(__ROOT__ . '/MiniFW/core/Db/DBAbstration.php');
+require 'vendor/autoload.php';
 
+echo Config::getInstance()->get('host');
 
-class PP extends DBAstration {
-	
-	public $name = "Hola";
-	
-}
-
-$p = new PP();
 
 // use Core\Config\Config; 
 
