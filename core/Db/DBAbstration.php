@@ -2,6 +2,7 @@
 
 namespace Db;
 
+use Config\Config;
 
 /**
  * 
@@ -9,7 +10,7 @@ namespace Db;
  * @author Natanael Acosta Crousset <natanael926@gmail.com>
  * @package Core\Db
  */
-class DBAstration{
+class DBAbstration{
 
 	/**
 	 * @var DBAstration
@@ -18,6 +19,10 @@ class DBAstration{
 	private static $instance = null;
 
 	private $conn = null;
+	
+	private $sql; 
+	
+	private $argsDataExecute;
 
 	/**
 	 * @return DBAstration
@@ -32,31 +37,74 @@ class DBAstration{
 	}
 
 	public function __construct() 
-	{
+	{	
 		try {
 			$nameDB = Config::getInstance()->get('name');
 			$hostDB = Config::getInstance()->get('host');
-			$argument = sprintf("mysql:dbname=%s;host=%s;", Config::getInstance()->get('name'), Confi);
-			$this->conn = new PDO($argument, Config::getInstance()->get('user'), Config::getInstance()->get('pass'));
-		} catch (Exception $e) {
-			echo "Error: " . $e->getMessage();
+			$user = Config::getInstance()->get('user');
+			$pass = Config::getInstance()->get('pass');			
+ 			$argument = sprintf("mysql:dbname=%s;host=%s;", $nameDB, $hostDB);
+			$this->conn = new \PDO($argument, $user, $pass);
+		} catch (PDOException $e) {
+			print "¡Error!: " . $e->getMessage() . "<br/>";
+			die();
 		}
-
-		echo $this->name;
+		
+	}
+	
+	public function create() 
+	{
+		$this->preparingSql('insert');
+		$this->query();
+	}
+	
+	/**
+	 * 
+	 * @param string $action {select, insert, update, delete}
+	 */
+	protected function preparingSql($action = 'insert')
+	{
+		$nameCulumn = [];
+		$nameCulumnPdo = [];
+		
+		foreach ($this->args as $value) {
+			$this->argsDataExecute[] = [$value['keyPdo'] => $value['value']];
+			$nameCulumn[] = $value['key'];
+			$nameCulumnPdo[] = $value['keyPdo'];
+		}
+		
+		if ($action == 'insert') {
+			$this->sql = "INSERT INTO " . $this->name;
+			$this->sql .= "(". implode($nameCulumn, ',') .")";
+			$this->sql .= "VALUES";
+			$this->sql .= "(". implode($nameCulumnPdo, ",") .")";
+		}
+		
+		return true;
 	}
 
 	/**
 	 * 
 	 * @param $query String
 	 * @param $tableName String
-	 * @param Array 
+	 * @param $args Array 
 	 */
-	public function select($query, $tableName = null, $params = null) 
+	public function query($sql = null, $args = null, $tableName = null) 
 	{
-		if ($tableName == null) {
-
+		if ($sql == null){
+			$sql = $this->sql;
 		}
-
+		
+		if($args == null) {
+			$args = $this->argsDataExecute;
+		}
+		
+		$reponce = $this->conn->prepare($sql);
+		$args = array(':name' => 'pp', ':pass' => '444');
+		
+		$reponce->execute($args);
+		
+// 		var_dump($reponce->fetchAll(\PDO::FETCH_OBJ));
 	}	
 
 
