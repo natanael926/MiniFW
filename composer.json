@@ -1,0 +1,24 @@
+{ 
+	"name": "Mini Framework",
+	"description": "",
+	"authors": [
+		{
+			"name": "Rudys Natanael Acosta Crousset",
+			"email": "natanael926@gmail.com"
+		}
+	],
+	"require": {
+		"php": ">=5.3",
+		"monolog/monolog": "1.0.*"
+	},
+	"require-dev": {
+		"php": ">=5.3",
+		"monolog/monolog": "1.0.*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Config\\" : "core/Config",
+			"Db\\" : "core/Db"
+		}
+	}
+}
