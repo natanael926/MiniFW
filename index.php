@@ -1,6 +1,7 @@
 <?php
 
 define('__ROOT__', dirname(dirname(__FILE__)));
+error_reporting(E_ALL);
 
 require 'vendor/autoload.php';
 

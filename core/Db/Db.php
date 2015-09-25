@@ -8,23 +8,20 @@ class Db extends DBAbstration {
 	
 	protected $args = [];
 	
-	protected $name = 'uesr';
+	protected $name = 'users';
 	
 	/**
 	 * New rows introduse
 	 * 
 	 * @param Array $args
 	 */
-	public function create() {
-		
-		$args = ["name" => "tito", "pass" => '123'];
-		
+	public function create($args = ["name" => "tito46", "pass" => '123']) 
+	{
 		
 		foreach ($args as $k => $v) {
-			$argsList[] = ['key' => $k, 'keyPdo' => ':'.$k, 'value' => $v];
+			$this->args[] = ['key' => $k, 'keyPdo' => ':'.$k, 'value' => $v];
 		}
 		
-		$this->args = $argsList;
 		parent::create();
 	}
 	

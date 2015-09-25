@@ -3,6 +3,7 @@
 namespace Db;
 
 use Config\Config;
+use Utiliti\MyArray as MyArray;
 
 /**
  * 
@@ -22,7 +23,7 @@ class DBAbstration{
 	
 	private $sql; 
 	
-	private $argsDataExecute;
+	private $argsDataExecute = [];
 
 	/**
 	 * @return DBAstration
@@ -46,7 +47,7 @@ class DBAbstration{
  			$argument = sprintf("mysql:dbname=%s;host=%s;", $nameDB, $hostDB);
 			$this->conn = new \PDO($argument, $user, $pass);
 		} catch (PDOException $e) {
-			print "¡Error!: " . $e->getMessage() . "<br/>";
+			print "Â¡Error!: " . $e->getMessage() . "<br/>";
 			die();
 		}
 		
@@ -54,8 +55,13 @@ class DBAbstration{
 	
 	public function create() 
 	{
-		$this->preparingSql('insert');
-		$this->query();
+		try {
+			$this->preparingSql('insert');
+			$this->query();
+		} catch (PDOException $Exception) {
+			echo $Exception->getMessage();
+			// throw new MyDatabaseException( $Exception->getMessage( ) , $Exception->getCode( ) );
+		}
 	}
 	
 	/**
@@ -66,9 +72,10 @@ class DBAbstration{
 	{
 		$nameCulumn = [];
 		$nameCulumnPdo = [];
-		
+		$this->argsDataExecute = new MyArray();
+
 		foreach ($this->args as $value) {
-			$this->argsDataExecute[] = [$value['keyPdo'] => $value['value']];
+			$this->argsDataExecute->addElement($value['keyPdo'], $value['value']);
 			$nameCulumn[] = $value['key'];
 			$nameCulumnPdo[] = $value['keyPdo'];
 		}
@@ -89,7 +96,7 @@ class DBAbstration{
 	 * @param $tableName String
 	 * @param $args Array 
 	 */
-	public function query($sql = null, $args = null, $tableName = null) 
+	public function query($sql = null, $args = null) 
 	{
 		if ($sql == null){
 			$sql = $this->sql;
@@ -98,13 +105,9 @@ class DBAbstration{
 		if($args == null) {
 			$args = $this->argsDataExecute;
 		}
-		
+
 		$reponce = $this->conn->prepare($sql);
-		$args = array(':name' => 'pp', ':pass' => '444');
-		
-		$reponce->execute($args);
-		
-// 		var_dump($reponce->fetchAll(\PDO::FETCH_OBJ));
+		$reponce->execute($args->get());
 	}	
 
 

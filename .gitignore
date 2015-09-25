@@ -1,4 +1,6 @@
 vendor
+minifw.sublime-project
+minifw.sublime-workspace
 .project
 .settings/*
 app.log
