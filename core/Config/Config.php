@@ -3,16 +3,16 @@
 namespace Config;
 
 /**
- * 
  * @author Rudys Natanael Acosta Crousset <natanael926@gmail.com>
+ * 
  * @version 0.1
  */
-class Config {
-
-	/**
-	 * @var Config
-	 * @access private
-	 */
+class Config 
+{
+  	/**
+   	* @var Config
+   	* @access private
+	*/
 	private static $instance = null;
 
 	/**
@@ -24,12 +24,10 @@ class Config {
 	private $rows = [];
 
 	/**
-	 * 
 	 * @return  Config 
 	 */
 	public static function getInstance()
 	{
-
 		if(self::$instance == null) {
 			self::$instance = new self();
 		}
@@ -47,6 +45,7 @@ class Config {
 
 	/**
 	 * @param  $name
+	 * 
 	 * @return string
 	 */
 	public function get($name) 
